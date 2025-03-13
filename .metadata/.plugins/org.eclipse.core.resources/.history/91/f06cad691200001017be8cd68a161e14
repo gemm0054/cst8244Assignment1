@@ -1,0 +1,29 @@
+#include "des.h"
+#include <sys/neutrino.h>
+
+int main() {
+    printf("Display running. PID: %d\n", getpid());
+
+    int rcvid;
+    char msg[MAX_MSG_SIZE];
+    int chid = ChannelCreate(0);
+
+    if (chid == -1) {
+        perror("ChannelCreate failed");
+        return 1;
+    }
+
+    while (1) {
+        rcvid = MsgReceive(chid, msg, sizeof(msg), NULL);
+        if (rcvid == -1) {
+            perror("MsgReceive failed");
+            continue;
+        }
+
+        printf("[DISPLAY] %s\n", msg);
+
+        MsgReply(rcvid, 0, NULL, 0);
+    }
+
+    return 0;
+}

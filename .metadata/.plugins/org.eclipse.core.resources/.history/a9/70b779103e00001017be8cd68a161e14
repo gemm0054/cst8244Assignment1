@@ -1,0 +1,179 @@
+#include "des.h"
+#include <sys/neutrino.h>
+#include <errno.h>
+
+State currentState = STATE_IDLE;
+int display_pid;  // PID of the des_display process
+int chid;
+
+// Function prototypes for each state handler
+State handle_idle(Message *msg);
+State handle_wait_for_guard_unlock(Message *msg);
+State handle_wait_for_first_door_open(Message *msg);
+State handle_wait_for_scale(Message *msg);
+State handle_wait_for_first_door_close(Message *msg);
+State handle_wait_for_second_door_unlock(Message *msg);
+State handle_wait_for_second_door_open(Message *msg);
+State handle_wait_for_second_door_close(Message *msg);
+State handle_scan(Message *msg);  // New state handler for scan
+
+// Function pointer for state transitions
+State (*stateHandler)(Message *) = handle_idle;
+
+// Send system status updates to `des_display`
+void send_status_update(Message *msg) {
+    MsgSend(display_pid, msg, sizeof(Message), NULL, 0);  // Send the message to the display process
+}
+
+// State Handlers
+State handle_idle(Message *msg) {
+	printf("Waiting for Person\n");
+    if (msg->event == EVENT_LEFT_SCAN || msg->event == EVENT_RIGHT_SCAN) {
+        // If it's a scan event, transition to the scan state
+        return handle_scan(msg);
+    }
+    return STATE_IDLE;
+}
+
+State handle_scan(Message *msg) {
+	printf("Entered Scan\n");
+    // Check the scan direction and set the status accordingly
+    if (msg->event == EVENT_LEFT_SCAN) {
+        snprintf(msg->status, MAX_MSG_SIZE, "Left card scanned: %d", msg->person_id);
+    } else if (msg->event == EVENT_RIGHT_SCAN) {
+        snprintf(msg->status, MAX_MSG_SIZE, "Right card scanned: %d", msg->person_id);
+    }
+    printf("Sending Scan %s\n", msg->status);
+    send_status_update(msg);  // Send status update to display
+
+    // After scanning, transition to the next state
+    snprintf(msg->status, MAX_MSG_SIZE, "Waiting for guard unlock.");
+    send_status_update(msg);
+    return STATE_WAIT_FOR_GUARD_UNLOCK;
+}
+
+State handle_wait_for_guard_unlock(Message *msg) {
+    if (msg->event == EVENT_GUARD_LEFT_UNLOCK || msg->event == EVENT_GUARD_RIGHT_UNLOCK) {
+        snprintf(msg->status, MAX_MSG_SIZE, "Guard unlocked door. Waiting for door open.");
+        send_status_update(msg);
+        return STATE_WAIT_FOR_FIRST_DOOR_OPEN;
+    }
+    return STATE_WAIT_FOR_GUARD_UNLOCK;
+}
+
+State handle_wait_for_first_door_open(Message *msg) {
+    if (msg->event == EVENT_LEFT_OPEN || msg->event == EVENT_RIGHT_OPEN) {
+        snprintf(msg->status, MAX_MSG_SIZE, "Door opened. Waiting for weight scale.");
+        send_status_update(msg);
+        return STATE_WAIT_FOR_SCALE;
+    }
+    return STATE_WAIT_FOR_FIRST_DOOR_OPEN;
+}
+
+State handle_wait_for_scale(Message *msg) {
+    if (msg->event == EVENT_WEIGHT_SCALE) {
+        snprintf(msg->status, MAX_MSG_SIZE, "Weight recorded: %d kg", msg->weight);
+        send_status_update(msg);
+        snprintf(msg->status, MAX_MSG_SIZE, "Waiting for door close.");
+        send_status_update(msg);
+        return STATE_WAIT_FOR_FIRST_DOOR_CLOSE;
+    }
+    return STATE_WAIT_FOR_SCALE;
+}
+
+State handle_wait_for_first_door_close(Message *msg) {
+    if (msg->event == EVENT_LEFT_CLOSED || msg->event == EVENT_RIGHT_CLOSED) {
+        snprintf(msg->status, MAX_MSG_SIZE, "First door closed. Waiting for second door unlock.");
+        send_status_update(msg);
+        return STATE_WAIT_FOR_SECOND_DOOR_UNLOCK;
+    }
+    return STATE_WAIT_FOR_FIRST_DOOR_CLOSE;
+}
+
+State handle_wait_for_second_door_unlock(Message *msg) {
+    if (msg->event == EVENT_GUARD_RIGHT_UNLOCK || msg->event == EVENT_GUARD_LEFT_UNLOCK) {
+        snprintf(msg->status, MAX_MSG_SIZE, "Second door unlocked. Waiting for open.");
+        send_status_update(msg);
+        return STATE_WAIT_FOR_SECOND_DOOR_OPEN;
+    }
+    return STATE_WAIT_FOR_SECOND_DOOR_UNLOCK;
+}
+
+State handle_wait_for_second_door_open(Message *msg) {
+    if (msg->event == EVENT_RIGHT_OPEN || msg->event == EVENT_LEFT_OPEN) {
+        snprintf(msg->status, MAX_MSG_SIZE, "Second door opened. Waiting for close.");
+        send_status_update(msg);
+        return STATE_WAIT_FOR_SECOND_DOOR_CLOSE;
+    }
+    return STATE_WAIT_FOR_SECOND_DOOR_OPEN;
+}
+
+State handle_wait_for_second_door_close(Message *msg) {
+    if (msg->event == EVENT_RIGHT_CLOSED || msg->event == EVENT_LEFT_CLOSED) {
+        snprintf(msg->status, MAX_MSG_SIZE, "Second door closed. Entry complete.");
+        send_status_update(msg);
+        return STATE_COMPLETE;
+    }
+    return STATE_WAIT_FOR_SECOND_DOOR_CLOSE;
+}
+
+// Main Controller Process
+int main(int argc, char *argv[]) {
+    // Phase I: Get display's PID from command-line arguments
+    if (argc != 2) {
+        printf("Usage: %s <display_pid>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+    display_pid = atoi(argv[1]);
+
+    printf("Controller running. PID: %d\n", getpid());
+
+    // Create a channel for the inputs process to attach
+    int chid = ChannelCreate(0);
+    if (chid == -1) {
+        perror("ChannelCreate failed");
+        return EXIT_FAILURE;
+    }
+
+    // Attach to the display's channel
+    if (ConnectAttach(0, display_pid, chid, 0, 0) == -1) {
+        perror("ConnectAttach failed");
+        return EXIT_FAILURE;
+    }
+
+    printf("Controller's PID: %d\n", getpid());
+
+    // Phase II: Main loop to handle messages from inputs
+    int rcvid;
+    Message msg;
+    while (1) {
+        // Receive message from inputs process
+        rcvid = MsgReceive(chid, &msg, sizeof(msg), NULL);
+        if (rcvid == -1) {
+            perror("MsgReceive failed");
+            continue;
+        }
+
+
+        // Transition state based on message event
+        currentState = stateHandler(&msg);
+
+        // Update state handler for the next state
+        switch (currentState) {
+            case STATE_IDLE: stateHandler = handle_idle; break;
+            case STATE_WAIT_FOR_GUARD_UNLOCK: stateHandler = handle_wait_for_guard_unlock; break;
+            case STATE_WAIT_FOR_FIRST_DOOR_OPEN: stateHandler = handle_wait_for_first_door_open; break;
+            case STATE_WAIT_FOR_SCALE: stateHandler = handle_wait_for_scale; break;
+            case STATE_WAIT_FOR_FIRST_DOOR_CLOSE: stateHandler = handle_wait_for_first_door_close; break;
+            case STATE_WAIT_FOR_SECOND_DOOR_UNLOCK: stateHandler = handle_wait_for_second_door_unlock; break;
+            case STATE_WAIT_FOR_SECOND_DOOR_OPEN: stateHandler = handle_wait_for_second_door_open; break;
+            case STATE_WAIT_FOR_SECOND_DOOR_CLOSE: stateHandler = handle_wait_for_second_door_close; break;
+            default: stateHandler = handle_idle; break;
+        }
+
+        // Reply to inputs with EOK (indicating successful message processing)
+               MsgReply(rcvid, EOK, NULL, 0);
+    }
+
+    return EXIT_SUCCESS;
+}

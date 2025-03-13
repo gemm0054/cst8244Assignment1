@@ -1,0 +1,50 @@
+#include "../../des_controller/src/des.h"
+#include <sys/neutrino.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        printf("Usage: %s <controller_pid>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    int controller_pid = atoi(argv[1]);
+    int coid = ConnectAttach(0, controller_pid, 1, 0, 0);
+    if (coid == -1) {
+        perror("ConnectAttach failed");
+        return EXIT_FAILURE;
+    }
+
+    Message msg;
+    char input[10];
+    while (1) {
+    	 fflush(stdout);
+        printf("Enter DES input-event (ls = left scan, rs = rightscan, ws weight scale, lo = left open, ro = right open, lc = left closed, rc = right closed, gru = guard right unlock, grl = guard right lock, glu = guard left unlock, gll = guard left lock, exit = exit programs): ");
+        scanf("%s", input);
+
+        if (strcmp(input, "ls") == 0 || strcmp(input, "rs") == 0) {
+            msg.event = (strcmp(input, "ls") == 0) ? EVENT_LEFT_SCAN : EVENT_RIGHT_SCAN;
+            printf("Enter person ID: ");
+            scanf("%d", &msg.person_id);
+
+        } else if (strcmp(input, "ws") == 0) {
+            msg.event = EVENT_WEIGHT_SCALE;
+            printf("Enter person's weight: ");
+            scanf("%d", &msg.weight);
+        } else if () {
+
+        } else if (strcmp(input, "exit") == 0) {
+        	msg.event = EVENT_EXIT;
+            break;
+        } else {
+            printf("Invalid input, try again.\n");
+            continue;
+        }
+        MsgSend(coid, &msg, sizeof(msg), NULL, 0);
+    }
+
+    ConnectDetach(coid);
+    return EXIT_SUCCESS;
+}

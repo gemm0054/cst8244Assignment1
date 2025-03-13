@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com.qnx.tools.ide.qde.ui.QDERemoteCoreLaunch">
+    <booleanAttribute key="com.qnx.tools.ide.qde.core.LOAD_FROM_TARGET" value="true"/>
+    <stringAttribute key="com.qnx.tools.ide.qde.core.REMOTE_COREFILE_PATH" value="/data/var/dumper/des_display.core"/>
+    <stringAttribute key="com.qnx.tools.ide.qde.core.TARGET_ATTR" value="192.168.56.101"/>
+    <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="C:\Users\gemmx\cst8244_assign1.ws\des_display\build\x86_64-debug\des_display"/>
+    <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="des_display"/>
+</launchConfiguration>

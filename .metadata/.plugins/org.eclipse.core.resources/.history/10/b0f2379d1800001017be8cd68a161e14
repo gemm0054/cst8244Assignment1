@@ -1,0 +1,49 @@
+#ifndef DES_H
+#define DES_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define MAX_MSG_SIZE 128
+
+// Define states for the controller
+typedef enum {
+    STATE_IDLE,
+    STATE_WAIT_FOR_GUARD_UNLOCK,
+    STATE_WAIT_FOR_FIRST_DOOR_OPEN,
+    STATE_WAIT_FOR_SCALE,
+    STATE_WAIT_FOR_FIRST_DOOR_CLOSE,
+    STATE_WAIT_FOR_SECOND_DOOR_UNLOCK,
+    STATE_WAIT_FOR_SECOND_DOOR_OPEN,
+    STATE_WAIT_FOR_SECOND_DOOR_CLOSE,
+    STATE_COMPLETE
+} State;
+
+// Define events that trigger state transitions
+typedef enum {
+    EVENT_LEFT_SCAN,        // ls
+    EVENT_RIGHT_SCAN,       // rs
+    EVENT_WEIGHT_SCALE,     // ws
+    EVENT_LEFT_OPEN,        // lo
+    EVENT_RIGHT_OPEN,       // ro
+    EVENT_LEFT_CLOSED,      // lc
+    EVENT_RIGHT_CLOSED,     // rc
+    EVENT_GUARD_LEFT_UNLOCK,  // glu
+    EVENT_GUARD_LEFT_LOCK,    // gll
+    EVENT_GUARD_RIGHT_UNLOCK, // gru
+    EVENT_GUARD_RIGHT_LOCK,   // grl
+    EVENT_INVALID,
+	EVENT_EXIT
+} Event;
+
+// Structure for messages between processes
+typedef struct {
+    Event event;
+    int person_id;
+    int weight;
+    string status;
+} Message;
+
+#endif // DES_H
