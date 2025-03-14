@@ -14,9 +14,10 @@ LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/name=Local
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
 com.qnx.tools.ide.qde.debug.core.descriptorType.default\:remote\ core\ des_controller/activeLaunchMode=debug
+com.qnx.tools.ide.qde.debug.core.descriptorType.project\:P/des_controller/activeLaunchMode=run
 com.qnx.tools.ide.qde.debug.core.descriptorType.project\:P/des_controller/activeLaunchTarget=com.qnx.tools.ide.target.qconn\:192.168.56.101
 com.qnx.tools.ide.qde.debug.core.descriptorType.project\:P/des_display/activeLaunchMode=run
 com.qnx.tools.ide.qde.debug.core.descriptorType.project\:P/des_display/activeLaunchTarget=com.qnx.tools.ide.target.qconn\:192.168.56.101
 com.qnx.tools.ide.qde.debug.core.descriptorType.project\:P/des_inputs/activeLaunchTarget=com.qnx.tools.ide.target.qconn\:192.168.56.101
-configDescList=com.qnx.tools.ide.qde.debug.core.descriptorType.project\:P/des_display,com.qnx.tools.ide.qde.debug.core.descriptorType.project\:P/des_controller,com.qnx.tools.ide.qde.debug.core.descriptorType.project\:P/des_inputs,com.qnx.tools.ide.qde.debug.core.descriptorType.default\:remote core des_controller,com.qnx.tools.ide.qde.debug.core.descriptorType.default\:remote core des_display
+configDescList=com.qnx.tools.ide.qde.debug.core.descriptorType.project\:P/des_controller,com.qnx.tools.ide.qde.debug.core.descriptorType.project\:P/des_display,com.qnx.tools.ide.qde.debug.core.descriptorType.project\:P/des_inputs,com.qnx.tools.ide.qde.debug.core.descriptorType.default\:remote core des_controller,com.qnx.tools.ide.qde.debug.core.descriptorType.default\:remote core des_display
 eclipse.preferences.version=1

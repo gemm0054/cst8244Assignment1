@@ -2270,3 +2270,222 @@ make: Nothing to be done for 'all'.
 03:20:36 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
 make -j6 all 
 make: Nothing to be done for 'all'.
+10:58:50 **** Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_controller.d,-MT,build/x86_64-debug/src/des_controller.o -o build/x86_64-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_controller   build/x86_64-debug/src/des_controller.o  
+10:58:52 **** Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+10:58:52 **** Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:00:43 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_controller.d,-MT,build/x86_64-debug/src/des_controller.o -o build/x86_64-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
+src/des_controller.c: In function 'handle_exit':
+src/des_controller.c:153:3: error: label 'cleanup' used but not defined
+   goto cleanup;
+   ^~~~
+src/des_controller.c: In function 'main':
+src/des_controller.c:214:5: warning: label 'cleanup' defined but not used [-Wunused-label]
+     cleanup:
+     ^~~~~~~
+cc: C:/Users/gemmx/qnx710/host/win64/x86_64/usr/lib/gcc/x86_64-pc-nto-qnx7.1.0/8.3.0/cc1 caught signal 1
+Makefile:55: recipe for target 'build/x86_64-debug/src/des_controller.o' failed
+make: *** [build/x86_64-debug/src/des_controller.o] Error 1
+"make -j6 all" terminated with exit code 2. Build might be incomplete.
+11:00:43 **** Incremental Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:00:43 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:02:04 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_controller.d,-MT,build/x86_64-debug/src/des_controller.o -o build/x86_64-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
+src/des_controller.c: In function 'main':
+src/des_controller.c:206:43: warning: assignment to 'State (*)(Message *)' {aka 'enum <anonymous> (*)(struct <anonymous> *)'} from incompatible pointer type 'void (*)(Message *)' {aka 'void (*)(struct <anonymous> *)'} [-Wincompatible-pointer-types]
+             case STATE_EXIT: stateHandler = handle_exit; goto cleanup;
+                                           ^
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_controller   build/x86_64-debug/src/des_controller.o  
+11:02:05 **** Incremental Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:02:05 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:05:54 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_controller.d,-MT,build/x86_64-debug/src/des_controller.o -o build/x86_64-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_controller   build/x86_64-debug/src/des_controller.o  
+11:05:54 **** Incremental Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:05:54 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:18:29 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_controller.d,-MT,build/x86_64-debug/src/des_controller.o -o build/x86_64-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_controller   build/x86_64-debug/src/des_controller.o  
+11:18:30 **** Incremental Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_display.d,-MT,build/x86_64-debug/src/des_display.o -o build/x86_64-debug/src/des_display.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_display.c
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_display   build/x86_64-debug/src/des_display.o  
+11:18:30 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_inputs.d,-MT,build/x86_64-debug/src/des_inputs.o -o build/x86_64-debug/src/des_inputs.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_inputs.c
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_inputs   build/x86_64-debug/src/des_inputs.o  
+11:32:41 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_controller.d,-MT,build/x86_64-debug/src/des_controller.o -o build/x86_64-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
+src/des_controller.c: In function 'main':
+src/des_controller.c:193:13: warning: unused variable 'msg' [-Wunused-variable]
+     Message msg;
+             ^~~
+src/des_controller.c:192:9: warning: unused variable 'rcvid' [-Wunused-variable]
+     int rcvid;
+         ^~~~~
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_controller   build/x86_64-debug/src/des_controller.o  
+11:32:43 **** Incremental Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:32:43 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:52:35 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_controller.d,-MT,build/x86_64-debug/src/des_controller.o -o build/x86_64-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
+src/des_controller.c: In function 'main':
+src/des_controller.c:193:13: warning: unused variable 'msg' [-Wunused-variable]
+     Message msg;
+             ^~~
+src/des_controller.c:192:9: warning: unused variable 'rcvid' [-Wunused-variable]
+     int rcvid;
+         ^~~~~
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_controller   build/x86_64-debug/src/des_controller.o  
+11:52:36 **** Incremental Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:52:36 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_inputs.d,-MT,build/x86_64-debug/src/des_inputs.o -o build/x86_64-debug/src/des_inputs.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_inputs.c
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_inputs   build/x86_64-debug/src/des_inputs.o  
+11:56:36 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:56:36 **** Incremental Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:56:36 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_inputs.d,-MT,build/x86_64-debug/src/des_inputs.o -o build/x86_64-debug/src/des_inputs.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_inputs.c
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_inputs   build/x86_64-debug/src/des_inputs.o  
+11:58:28 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_controller.d,-MT,build/x86_64-debug/src/des_controller.o -o build/x86_64-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
+src/des_controller.c: In function 'main':
+src/des_controller.c:210:33: error: incompatible type for argument 1 of 'send_status_update'
+              send_status_update(msg);
+                                 ^~~
+src/des_controller.c:25:34: note: expected 'Message *' {aka 'struct <anonymous> *'} but argument is of type 'Message' {aka 'struct <anonymous>'}
+ void send_status_update(Message *msg) {
+                         ~~~~~~~~~^~~
+src/des_controller.c:193:13: warning: unused variable 'msg' [-Wunused-variable]
+     Message msg;
+             ^~~
+src/des_controller.c:192:9: warning: unused variable 'rcvid' [-Wunused-variable]
+     int rcvid;
+         ^~~~~
+cc: C:/Users/gemmx/qnx710/host/win64/x86_64/usr/lib/gcc/x86_64-pc-nto-qnx7.1.0/8.3.0/cc1 caught signal 1
+Makefile:55: recipe for target 'build/x86_64-debug/src/des_controller.o' failed
+make: *** [build/x86_64-debug/src/des_controller.o] Error 1
+"make -j6 all" terminated with exit code 2. Build might be incomplete.
+11:58:28 **** Incremental Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:58:29 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:58:54 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_controller.d,-MT,build/x86_64-debug/src/des_controller.o -o build/x86_64-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
+src/des_controller.c: In function 'main':
+src/des_controller.c:193:13: warning: unused variable 'msg' [-Wunused-variable]
+     Message msg;
+             ^~~
+src/des_controller.c:192:9: warning: unused variable 'rcvid' [-Wunused-variable]
+     int rcvid;
+         ^~~~~
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_controller   build/x86_64-debug/src/des_controller.o  
+11:58:55 **** Incremental Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+11:58:55 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+12:22:58 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_controller.d,-MT,build/x86_64-debug/src/des_controller.o -o build/x86_64-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
+src/des_controller.c: In function 'main':
+src/des_controller.c:193:13: warning: unused variable 'msg' [-Wunused-variable]
+     Message msg;
+             ^~~
+src/des_controller.c:192:9: warning: unused variable 'rcvid' [-Wunused-variable]
+     int rcvid;
+         ^~~~~
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_controller   build/x86_64-debug/src/des_controller.o  
+12:22:58 **** Incremental Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_display.d,-MT,build/x86_64-debug/src/des_display.o -o build/x86_64-debug/src/des_display.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_display.c
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_display   build/x86_64-debug/src/des_display.o  
+12:22:59 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_inputs.d,-MT,build/x86_64-debug/src/des_inputs.o -o build/x86_64-debug/src/des_inputs.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_inputs.c
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_inputs   build/x86_64-debug/src/des_inputs.o  
+12:47:03 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_controller.d,-MT,build/x86_64-debug/src/des_controller.o -o build/x86_64-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
+src/des_controller.c: In function 'main':
+src/des_controller.c:193:13: warning: unused variable 'msg' [-Wunused-variable]
+     Message msg;
+             ^~~
+src/des_controller.c:192:9: warning: unused variable 'rcvid' [-Wunused-variable]
+     int rcvid;
+         ^~~~~
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_controller   build/x86_64-debug/src/des_controller.o  
+12:47:04 **** Incremental Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+12:47:04 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+12:53:31 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+12:53:31 **** Incremental Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+12:53:32 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+make: Nothing to be done for 'all'.
+12:54:53 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_controller.d,-MT,build/x86_64-debug/src/des_controller.o -o build/x86_64-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
+src/des_controller.c: In function 'main':
+src/des_controller.c:193:13: warning: unused variable 'msg' [-Wunused-variable]
+     Message msg;
+             ^~~
+src/des_controller.c:192:9: warning: unused variable 'rcvid' [-Wunused-variable]
+     int rcvid;
+         ^~~~~
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_controller   build/x86_64-debug/src/des_controller.o  
+12:54:54 **** Incremental Build of configuration x86_64-debug for project des_display ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_display.d,-MT,build/x86_64-debug/src/des_display.o -o build/x86_64-debug/src/des_display.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_display.c
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_display   build/x86_64-debug/src/des_display.o  
+12:54:55 **** Incremental Build of configuration x86_64-debug for project des_inputs ****
+make -j6 all 
+qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_inputs.d,-MT,build/x86_64-debug/src/des_inputs.o -o build/x86_64-debug/src/des_inputs.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_inputs.c
+qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_inputs   build/x86_64-debug/src/des_inputs.o  

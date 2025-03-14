@@ -6,8 +6,8 @@
                 <name value="192.168.56.101"/>
             </project>
             <connection>
-                <TIMEZONE value="UTC0"/>
                 <HASVERSION value="1"/>
+                <TIMEZONE value="UTC0"/>
                 <VERSION value="2023/07/14-18:28:33EDT"/>
                 <RELEASE value="7.1.0"/>
                 <SYSNAME value="QNX"/>

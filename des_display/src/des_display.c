@@ -43,7 +43,6 @@ int main() {
                 break;
 
             case EVENT_EXIT:
-                printf("Received exit signal. Shutting down.\n");
                 goto cleanup;
 
             default:
@@ -54,6 +53,7 @@ int main() {
 
 cleanup:
     // Phase III: Destroy channel and exit
+	printf("Exiting Display\n");
     ChannelDestroy(chid);
     return EXIT_SUCCESS;
 }

@@ -16,7 +16,6 @@ State handle_wait_for_guard_lock(Message *msg);
 State handle_wait_for_door_open(Message *msg);
 State handle_wait_for_scale(Message *msg);
 State handle_wait_for_door_close(Message *msg);
-State handle_wait_exit(Message *msg);
 State handle_scan(Message *msg);
 
 // Function pointer for state transitions
@@ -75,11 +74,19 @@ State handle_wait_for_guard_unlock(Message *msg) {
 
 State handle_wait_for_guard_lock(Message *msg) {
     if (msg->event == EVENT_GUARD_LEFT_LOCK && left) {
-        snprintf(msg->status, MAX_MSG_SIZE, "%s", outMessage[7]);
-        left = false;
+    	if (doors == 0) {
+    		snprintf(msg->status, MAX_MSG_SIZE, "%s", outMessage[7]);
+    		left = false;
+    	} else {
+    		snprintf(msg->status, MAX_MSG_SIZE, "%s", outMessage[21]);
+    	}
     } else if (msg->event == EVENT_GUARD_RIGHT_LOCK && !left) {
-        snprintf(msg->status, MAX_MSG_SIZE, "%s", outMessage[8]);
-        left = true;
+    	if (doors == 0) {
+    		snprintf(msg->status, MAX_MSG_SIZE, "%s", outMessage[8]);
+    		left = true;\
+    	} else {
+    		snprintf(msg->status, MAX_MSG_SIZE, "%s", outMessage[20]);
+    	}
     } else {
         return STATE_WAIT_FOR_GUARD_LOCK;  // Stay in this state until we get the correct event
     }
@@ -97,14 +104,21 @@ State handle_wait_for_guard_lock(Message *msg) {
 State handle_wait_for_door_open(Message *msg) {
     if (msg->event == EVENT_LEFT_OPEN) {
     	if (left == true) {
-    		printf("Opening Left");
-    		snprintf(msg->status, MAX_MSG_SIZE, "%s", outMessage[9]);
+    		if (doors == 0) {
+    			snprintf(msg->status, MAX_MSG_SIZE, "%s", outMessage[9]);
+    		} else {
+    			snprintf(msg->status, MAX_MSG_SIZE, "%s", outMessage[18]);
+    		}
     	} else {
     		return STATE_WAIT_FOR_DOOR_OPEN;
     	}
     } else if (msg->event == EVENT_RIGHT_OPEN) {
     	if (left == false) {
-    		snprintf(msg->status, MAX_MSG_SIZE, "%s", outMessage[10]);
+    		if (doors == 0) {
+    			snprintf(msg->status, MAX_MSG_SIZE, "%s", outMessage[10]);
+    		} else {
+    			snprintf(msg->status, MAX_MSG_SIZE, "%s", outMessage[19]);
+    		}
     	} else {
     		return STATE_WAIT_FOR_DOOR_OPEN;
     	}
@@ -147,10 +161,6 @@ State handle_wait_for_door_close(Message *msg) {
         return STATE_WAIT_FOR_GUARD_LOCK;
 }
 
-State handle_wait_exit(Message *msg) {
-	return 0;
-}
-
 // Main Controller Process
 int main(int argc, char *argv[]) {
     // Phase I: Get display's PID from command-line arguments
@@ -182,31 +192,45 @@ int main(int argc, char *argv[]) {
     int rcvid;
     Message msg;
     while (1) {
-        // Receive message from inputs process
-        rcvid = MsgReceive(chid, &msg, sizeof(msg), NULL);
-        if (rcvid == -1) {
-            perror("MsgReceive failed");
-            continue;
-        }
+    	// Phase II: Main loop to handle messages from inputs
+    	int rcvid;
+    	Message msg;
+    	while (1) {
+    	    rcvid = MsgReceive(chid, &msg, sizeof(msg), NULL);
+    	    if (rcvid == -1) {
+    	        perror("MsgReceive failed");
+    	        continue;
+    	    }
 
+    	    if (msg.event == EVENT_EXIT) {
+    	        // Send a reply before exiting to avoid blocking sender
+    	        MsgReply(rcvid, EOK, NULL, 0);
 
-        // Transition state based on message event
-        currentState = stateHandler(&msg);
+    	        printf("Exiting Controller\n");  // Ensure this prints
+    	        send_status_update(&msg);
+    	        ChannelDestroy(chid);
+    	        ConnectDetach(coid);
+    	        return EXIT_SUCCESS;
+    	    }
 
-        // Update state handler for the next state
-        switch (currentState) {
-            case STATE_IDLE: stateHandler = handle_idle; break;
-            case STATE_WAIT_FOR_GUARD_UNLOCK: stateHandler = handle_wait_for_guard_unlock; break;
-            case STATE_WAIT_FOR_GUARD_LOCK: stateHandler = handle_wait_for_guard_lock; break;
-            case STATE_WAIT_FOR_DOOR_OPEN: stateHandler = handle_wait_for_door_open; break;
-            case STATE_WAIT_FOR_SCALE: stateHandler = handle_wait_for_scale; break;
-            case STATE_WAIT_FOR_DOOR_CLOSE: stateHandler = handle_wait_for_door_close; break;
-            default: stateHandler = handle_idle; break;
-        }
+    	    // Transition state based on message event
+    	    currentState = stateHandler(&msg);
 
-        // Reply to inputs with EOK (indicating successful message processing)
-               MsgReply(rcvid, EOK, NULL, 0);
+    	    // Update state handler for the next state
+    	    switch (currentState) {
+    	        case STATE_IDLE: stateHandler = handle_idle; printf("Waiting for Person..."); fflush(stdout); break;
+    	        case STATE_WAIT_FOR_GUARD_UNLOCK: stateHandler = handle_wait_for_guard_unlock; break;
+    	        case STATE_WAIT_FOR_GUARD_LOCK: stateHandler = handle_wait_for_guard_lock; break;
+    	        case STATE_WAIT_FOR_DOOR_OPEN: stateHandler = handle_wait_for_door_open; break;
+    	        case STATE_WAIT_FOR_SCALE: stateHandler = handle_wait_for_scale; break;
+    	        case STATE_WAIT_FOR_DOOR_CLOSE: stateHandler = handle_wait_for_door_close; break;
+    	        default: stateHandler = handle_idle; break;
+    	    }
+
+    	    MsgReply(rcvid, EOK, NULL, 0);
+    	}
+
     }
-
-    return EXIT_SUCCESS;
 }
+
+

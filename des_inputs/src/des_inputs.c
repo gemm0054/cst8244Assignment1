@@ -56,15 +56,16 @@ int main(int argc, char *argv[]) {
             msg.event = EVENT_GUARD_RIGHT_LOCK;
         } else if (strcmp(input, inMessage[11]) == 0) {
             msg.event = EVENT_EXIT;
-            break;
         } else {
             printf("Invalid input, try again.\n");
             continue;
         }
 
         MsgSend(coid, &msg, sizeof(msg), NULL, 0);
+        if (msg.event == EVENT_EXIT) {
+        	break;
+        }
     }
-
-    ConnectDetach(coid);
-    return EXIT_SUCCESS;
+    	ConnectDetach(coid);
+    	return EXIT_SUCCESS;
 }
