@@ -1,0 +1,69 @@
+#ifndef DES_H
+#define DES_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define MAX_MSG_SIZE 128
+
+// Define states for the controller
+#define NUM_STATES 11
+typedef enum {
+    STATE_IDLE = 0,
+    STATE_WAIT_FOR_GUARD_UNLOCK = 1,
+	STATE_WAIT_FOR_GUARD_LOCK = 2,
+    STATE_WAIT_FOR_FIRST_DOOR_OPEN = 3,
+    STATE_WAIT_FOR_SCALE = 4,
+    STATE_WAIT_FOR_FIRST_DOOR_CLOSE = 5,
+    STATE_WAIT_FOR_SECOND_DOOR_UNLOCK = 6,
+	STATE_WAIT_FOR_SECOND_DOOR_LOCK = 7,
+    STATE_WAIT_FOR_SECOND_DOOR_OPEN = 8,
+    STATE_WAIT_FOR_SECOND_DOOR_CLOSE = 9,
+    STATE_COMPLETE = 10
+} State;
+
+// Define events that trigger state transitions
+typedef enum {
+    EVENT_LEFT_SCAN,        // ls
+    EVENT_RIGHT_SCAN,       // rs
+    EVENT_WEIGHT_SCALE,     // ws
+    EVENT_LEFT_OPEN,        // lo
+    EVENT_RIGHT_OPEN,       // ro
+    EVENT_LEFT_CLOSED,      // lc
+    EVENT_RIGHT_CLOSED,     // rc
+    EVENT_GUARD_LEFT_UNLOCK,  // glu
+    EVENT_GUARD_LEFT_LOCK,    // gll
+    EVENT_GUARD_RIGHT_UNLOCK, // gru
+    EVENT_GUARD_RIGHT_LOCK,   // grl
+    EVENT_INVALID,
+	EVENT_EXIT,
+	EVENT_STATUS
+} Event;
+
+// Structure for messages between processes
+typedef struct {
+    Event event;
+    int person_id;
+    int weight;
+    char status[MAX_MSG_SIZE];
+} Message;
+
+const char *outMessage[NUM_OUTPUTS] = {
+		"Enter DES input-event (ls = left scan, rs = rightscan, ws weight scale, lo = left open, ro = right open, lc = left closed, rc = right closed, gru = guard right unlock, grl = guard right lock, glu = guard left unlock, gll = guard left lock, exit = exit programs): \n",
+		"Enter person ID: \n",
+		"Left card scanned: ",
+		"Right card scanned: ",
+		"Waiting for guard unlock.",
+		"Guard unlocked the left door. Waiting for left door to open.",
+		"Guard unlocked the right door. Waiting for right door to open.",
+		"Left door opened. Waiting for weight scale.",
+		"Right door opened. Waiting for weight scale.",
+		"Enter person's weight: \n",
+		"Weight recorded: ",
+		"Waiting for left door close.",
+		"Waiting for right door close.",
+
+};
+#endif // DES_H

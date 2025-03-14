@@ -9,18 +9,17 @@
 #define MAX_MSG_SIZE 128
 
 // Define states for the controller
+#define NUM_STATES 7
 typedef enum {
-    STATE_IDLE,
-    STATE_WAIT_FOR_GUARD_UNLOCK,
-    STATE_WAIT_FOR_FIRST_DOOR_OPEN,
-    STATE_WAIT_FOR_SCALE,
-    STATE_WAIT_FOR_FIRST_DOOR_CLOSE,
-    STATE_WAIT_FOR_SECOND_DOOR_UNLOCK,
-    STATE_WAIT_FOR_SECOND_DOOR_OPEN,
-    STATE_WAIT_FOR_SECOND_DOOR_CLOSE,
-    STATE_COMPLETE
+    STATE_IDLE = 0,
+    STATE_WAIT_FOR_GUARD_UNLOCK = 1,
+	STATE_WAIT_FOR_GUARD_LOCK = 2,
+    STATE_WAIT_FOR_DOOR_OPEN = 3,
+    STATE_WAIT_FOR_SCALE = 4,
+    STATE_WAIT_FOR_DOOR_CLOSE = 5,
+    STATE_EXIT = 6
 } State;
-
+#define NUM_EVENTS 13
 // Define events that trigger state transitions
 typedef enum {
     EVENT_LEFT_SCAN,        // ls
@@ -35,9 +34,24 @@ typedef enum {
     EVENT_GUARD_RIGHT_UNLOCK, // gru
     EVENT_GUARD_RIGHT_LOCK,   // grl
     EVENT_INVALID,
-	EVENT_EXIT,
+	EVENT_EXIT,				// exit
 	EVENT_STATUS
 } Event;
+
+const char *inMessage[NUM_EVENTS] = {
+		"ls",
+		"rs",
+		"ws",
+		"lo",
+		"ro",
+		"lc",
+		"rc",
+		"glu",
+		"gll",
+		"gru",
+		"grl",
+		"exit"
+};
 
 // Structure for messages between processes
 typedef struct {
@@ -47,4 +61,47 @@ typedef struct {
     char status[MAX_MSG_SIZE];
 } Message;
 
+#define NUM_OUTPUTS 18
+typedef enum
+{
+	PROMPT_MSG = 0,
+	ID_MSG = 1,
+	LS_MSG = 2,
+	RS_MSG = 3,
+	GU_MSG = 4,
+	GLU_MSG = 5,
+	GRU_MSG = 6,
+	GLL_MSG = 7,
+	GRL_MSG = 8,
+	LO_MSG = 9,
+	RO_MSG = 10,
+	WS_MSG = 11,
+	WSP_MSG = 12,
+	WLC_MSG = 13,
+	WRC_MSG = 14,
+	INVALID_MSG = 15,
+	LC_MSG = 16,
+	RC_MSG = 17
+} Output;
+const char *outMessage[NUM_OUTPUTS] = {
+		"Enter DES input-event (ls = left scan, rs = rightscan, ws weight scale, lo = left open, ro = right open, lc = left closed, rc = right closed, gru = guard right unlock, grl = guard right lock, glu = guard left unlock, gll = guard left lock, exit = exit programs): \n",
+		"Enter person ID: \n", //1
+		"Left card scanned: ", //2
+		"Right card scanned: ", //3
+		"Waiting for guard unlock.", //4
+		"Guard unlocked the left door. Waiting for left door to open.", //5
+		"Guard unlocked the right door. Waiting for right door to open.", //6
+		"Guard locked the left door. Waiting for right door unlock.", //7
+		"Guard locked the right door. Waiting for left door unlock.", //8
+		"Left door opened. Waiting for weight scale.", //9
+		"Right door opened. Waiting for weight scale.", //10
+		"Enter person's weight: \n", //11
+		"Weight recorded: ", //12
+		"Waiting for left door close.", //13
+		"Waiting for right door close.", //14
+		"Invalid input", //15
+		"left door closed. Waiting for left door lock.", //16
+		"right door closed. Waiting for right door lock." //17
+
+};
 #endif // DES_H

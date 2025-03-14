@@ -1,7 +1,7 @@
-15:30:38 **** Incremental Build of configuration x86_64-debug for project des_controller ****
+03:20:33 **** Incremental Build of configuration x86_64-debug for project des_controller ****
 make -j6 all 
 qcc -Vgcc_ntox86_64 -c -Wp,-MMD,build/x86_64-debug/src/des_controller.d,-MT,build/x86_64-debug/src/des_controller.o -o build/x86_64-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
 qcc -Vgcc_ntox86_64 -o build/x86_64-debug/des_controller   build/x86_64-debug/src/des_controller.o  
 
-15:30:39 Build Finished. 0 errors, 0 warnings. (took 1s.67ms)
+03:20:35 Build Finished. 0 errors, 0 warnings. (took 1s.345ms)
 
